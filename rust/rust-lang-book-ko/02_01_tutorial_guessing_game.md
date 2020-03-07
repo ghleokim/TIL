@@ -462,3 +462,176 @@ Please input your guess.
 You guessed: 10
 Too Big !
 ```
+
+## 반복문으로 여러 번 반복하기
+
+`loop` 키워드는 무한루프를 제공한다.
+
+Filename: src/main.rs
+
+```rust
+extern crate rand;
+
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
+
+fn main() {
+    println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1,101);
+
+    println!("The secret number is : {}", secret_number);
+    
+    println!("Please input your guess.");
+    
+    let mut guess = String::new();
+
+    io::stdin().read_line(&mut guess)
+        .expect("Failed to read line");
+
+    let guess: u32 = guess.trim().parse()
+        .expect("Please type a number!");
+    
+    println!("You guessed: {}", guess);
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less     => println!("Too small !"),
+        Ordering::Greater  => println!("Too Big !"),
+        Ordering::Equal    => println!("You Win !"),
+    }
+}
+```
+
+단, 이렇게만 적는다면 답을 맞춰도 계속 반복문이 실행된다는 것을 볼 수 있다. 이를 `parse` 메소드가 실패하도록 만들면(숫자가 아닌 문자를 넣어주면) 무한 반복의 늪에서 빠져나올 수는 있다.
+
+```bash
+$ cargo run
+   Compiling guessing_game v0.1.0 (.../TIL/rust/rust-lang-book-ko/projects/02/guessing_game)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.58s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is : 24
+Please input your guess.
+25
+You guessed: 25
+Too Big !
+Please input your guess.
+23
+You guessed: 23
+Too small !
+Please input your guess.
+24
+You guessed: 24
+You Win !
+Please input your guess.
+quit
+thread 'main' panicked at 'Please type a number!: ParseIntError { kind: InvalidDigit }', src/libcore/result.rs:1188:5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace.
+```
+
+### 정답을 맞출 때 종료하기
+
+정답이 맞으면 종료할 수 있도록 `break`문을 추가한다.
+
+```rust
+extern crate rand;
+
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
+
+fn main() {
+    println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1,101);
+
+    println!("The secret number is : {}", secret_number);
+    
+    println!("Please input your guess.");
+    
+    let mut guess = String::new();
+
+    io::stdin().read_line(&mut guess)
+        .expect("Failed to read line");
+
+    let guess: u32 = guess.trim().parse()
+        .expect("Please type a number!");
+    
+    println!("You guessed: {}", guess);
+
+    match guess.cmp(&secret_number) {
+        Ordering::Less     => println!("Too small !"),
+        Ordering::Greater  => println!("Too Big !"),
+        Ordering::Equal    => {
+            println!("You Win !");
+            break;
+        },
+    }
+}
+```
+
+`break`문을 `Ordering::Equal` 후 처리되는 함수의 마지막 부분에 추가함으로써 정답을 맞힌 후 반복문이 종료될 수 있도록 해주다.
+
+### 잘못된 입력값 처리하기
+
+사용자가 숫자가 아닌 값을 입력했을 때, 종료되는 동작을 더욱 다듬어 숫자가 아닐 경우 사용자가 계속 입력할 수 있도록 해보자. `guess`가 `String`에서 `u32`로 변환되는 라인을 수정하면 가능하다.
+
+```rust
+let guess: u32 = match guess.trim().parse() {
+    Ok(num) => num,
+    Err(_) => continue,
+};
+```
+
+`expect` 메소드 호출을 `match` 표현식으로 바꾸는 것은 에러 발생시 종료에서 에러 처리로 바꾸는 일반적인 방법이다. `parse` 메소드가 `Result` 타입을 돌려주는 것과 `Result`는 `Ok` 또는 `Err` variants를 가진 열거형임을 기억하자. 
+
+`parse`가 입력값을 문자열에서 정수로 변환하는데 성공하였다면 `Ok`를 돌려줄 것이고, 첫 번째 arm의 패턴과 매칭이 되고, `match` 표현식은 `parse`가 생성한 `num` 값을 돌려줄 것이다. 이 값은 이 위 라인의 새로운 `guess`와 바인딩 될 것이다.
+
+만약 `parse`가 문자열을 정수로 바꾸지 못했다면, 에러 정보를 가진 `Err`를 돌려준다. `Err`는 첫 번째 arm의 패턴과 매칭하지 않지만, 두 번째 패턴 `Err(_)`과 매칭됩니다. `_`는 모든 값과 매칭될 수 있다. 이 예시에서는 `Err` 내에 어떤 값이 있던 간에 모든 `Err`를 매칭하도록 했다. 따라서 이 프로그램은 해당 arm의 코드인 `continue`를 실행하며, 이 코드는 `loop`의 다음 반복으로 가서 다른 추리값을 요청하도록 한다. 프로그램은 `parse`에서 가능한 모든 에러를 효과적으로 무시한다.
+
+이제 마지막으로 비밀 숫자를 출력하는 `println!` 라인을 삭제하면 최종프로그램은 완성이다.
+
+```rust
+extern crate rand;
+
+use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
+
+fn main() {
+    println!("Guess the number!");
+
+    let secret_number = rand::thread_rng().gen_range(1,101);
+
+    loop {
+    
+        println!("Please input your guess.");
+    
+        let mut guess = String::new();
+
+        io::stdin().read_line(&mut guess)
+            .expect("Failed to read line");
+
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+        
+        println!("You guessed: {}", guess);
+
+        match guess.cmp(&secret_number) {
+            Ordering::Less     => println!("Too small !"),
+            Ordering::Greater  => println!("Too Big !"),
+            Ordering::Equal    => {
+                println!("You Win !");
+                // break;
+            },
+        }
+    }   
+}
+```
+
+## 정리
+
+이 프로젝트에서는 `let`, `match`, 메소드, 연관함수, 외부 크레이트 사용 등의 새로운 러스트 개념을 소개하기 위한 실습이었다. 3장에서는 대부분의 프로그래밍 언어가 가지는 변수, 데이터타입, 함수를 소개하고 러스트에서의 사용법을 다룬다. 4장에서는 다른 프로그래밍 언어와 차별화된 러스트만의 특성인 소유권을 다룬다. 5장에서는 구조체외 메소드 문법을, 6장에서는 열거형에 대해 다룬다.
