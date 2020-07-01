@@ -98,7 +98,7 @@ suspended 상태의 프로세스는 스케줄링에서 제외된다. 프로세�
 
 실행되는 프로그램은 **시스템 콜을 통해** 자원에 대한 요청을 기다리거나, 시스템에 특정 이벤트가 발생하기를 기다리겠다는 것을 명시한다.
 
-blocking의 다섯 가지 주요 이유는 다음과 같다:
+- blocking의 다섯 가지 주요 이유는 다음과 같다:
 
     프로세스가 I/O 작업을 요청한다.
     프로세스가 메모리 또는 다른 자원을 요청한다.
@@ -110,23 +110,23 @@ blocking의 다섯 가지 주요 이유는 다음과 같다:
 
 프로그램의 실행은 종료되거나 종료당한다completed or terminated. 프로세스 종료의 다섯 가지 주요 이유는 다음과 같다:
 
-self termination
+- self termination
 
     프로그램이 수행하고자 하는 작업을 끝내거나, 하려는 작업을 수행하지 못 할 경우, 'terminate me' 시스템 콜을 부른다. 후자의 경우 예를 들어 잘못되었거나 일관성이 없는 데이터, 그리고 데이터를 원하는 방식으로 접근할 수 없는 경우(예: 파일 접근 권한이 잘못되었을 때)에 생긴다. 
 
-termination by a parent
+- termination by a parent
 
     프로세스는 'terminate P_i' 시스템 콜을 통해 자녀 프로세스 P_i를 종료시킬 수 있다. 이는 자녀 프로세스가 더 이상 필요 없을 때 수행된다. (이와 동일한 결과를 나타내는 방법으로써, 부모 프로세스가 자녀 프로세스에게 'terminate now' 신호를 보내 자녀 프로세스가 스스로 'terminate me' 시스템 콜을 하도록 하는 방법 또한 있다.)
 
-exceeding resource utilization
+- exceeding resource utilization
 
     OS는 프로세스 하나가 소비할 수 있는 자원을 제한하고 있을 수 있다. 이러한 제한을 넘어가는 프로세스의 경우 커널에 의해 종료될 수 있다.
 
-abnormal conditions during execution
+- abnormal conditions during execution
 
     커널은 프로그램이 실행되는 동안 비정상적인 조건이 발생하면 프로세스를 취소시켜 버린다. 예를 들어 유효하지 않은 명령어를 사용하거나, priviliged 명령어를 사용하거나, 오버플로우를 이르키는 연산을 하거나, 메모리 보호를 어기거나 등의 조건이 있을 것이다.
 
-incorrect interaction with other processes
+- incorrect interaction with other processes
 
     커널은 한 프로세스가 다른 프로세스와 잘못된 방법으로 상호작용하는 것을 발견하면 프로세스를 취소시킬 수 있다. 예를 들어, 프로그램이 데드락 상황에 관여될 때.
 
