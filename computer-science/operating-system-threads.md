@@ -35,7 +35,7 @@
 
 ## Single and Multithreaded Processes
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e13f2763-24c7-4b7b-97c5-6489a74d44e5/Screen_Shot_2020-07-07_at_12.19.17_PM.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e13f2763-24c7-4b7b-97c5-6489a74d44e5/Screen_Shot_2020-07-07_at_12.19.17_PM.png)
+![single-and-multithreaded-process](https://user-images.githubusercontent.com/52501513/86745499-5c45b400-c075-11ea-92a4-63ccc60a2c3b.png)
 
 ### Example: threaded program (psuedo code)
 
