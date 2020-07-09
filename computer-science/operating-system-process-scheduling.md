@@ -169,4 +169,4 @@ SJF는 최적화를 하지만 공평하지는 않다. 더 짧은 작업이 있�
 
 참고
 
-[2014 MIT Operating System CS377 수업](https://www.youtube.com/playlist?list=PLacuG5pysFbDQU8kKxbUh4K5c1iL5_k7k)
+[2014 UMass Operating System CS377 수업](https://www.youtube.com/playlist?list=PLacuG5pysFbDQU8kKxbUh4K5c1iL5_k7k)

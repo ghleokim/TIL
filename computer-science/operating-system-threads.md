@@ -165,4 +165,4 @@ Win32 Threads : Posix와 비슷하지만 윈도 전용
 
 참고
 
-[2014 MIT Operating System CS377 수업](https://www.youtube.com/playlist?list=PLacuG5pysFbDQU8kKxbUh4K5c1iL5_k7k)
+[2014 UMass Operating System CS377 수업](https://www.youtube.com/playlist?list=PLacuG5pysFbDQU8kKxbUh4K5c1iL5_k7k)
