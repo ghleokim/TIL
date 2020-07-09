@@ -9,4 +9,5 @@
 - [프로세스의 생성/종료/협업](./operating-system-process-create-terminate-coop.md)
 - [CPU 스케줄링](./operating-system-process-scheduling.md)
 - [쓰레드](./operating-system-threads.md)
+- [프로세스 동기화](./operating-system-synchronization.md)
 - [static linking, dynamic linking](./operating-system-library-linking.md)
